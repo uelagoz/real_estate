@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <ul></ul>
+
+    <script>
+        const urlParams = new URL(window.location.toLocaleString()).searchParams;
+
+        let requestUrl = "http://localhost:8080/api/user";
+        const firstname = urlParams.get("firstname");
+        if (firstname) {
+            console.log(`Firstname: ${firstname}`)
+            requestUrl = requestUrl + "?firstname=" + urlParams.get("firstname");
+        }
+
+        fetch(requestUrl, { credentials: 'include' }).then(response => response.json()).then(users => {
+            const listRoot = document.querySelector("ul");
+            for (user of users) {
+                const listItem = document.createElement("li");
+                listItem.innerText = user.firstname + " " + user.lastname;
+                listRoot.appendChild(listItem);
+            }
+        });
+    </script>
+</body>
+</html>
